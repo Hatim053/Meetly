@@ -1,0 +1,32 @@
+                                                       Meetly
+                                   A complete solution for interviews and training
+
+Features : 
+1) screen sharing
+2) real-time code editor
+3) real-time whiteboard
+4) video call
+5) text - chats
+6) host controlled environment
+7) recorded meets
+
+
+Task Schedule : 
+1) Learning and Research: 11 nov - 15 nov
+2) backend building phase : 16 nov - 21 nov
+3) frontend building phase : 22 nov - 26 nov
+4) Deployement : 27 nov
+
+
+
+Reference Attachments :
+1) screen sharing feature Video Ref Link : https://youtu.be/mFx48t6GkZI?si=ELZpO9BK3HffoUnE
+2) building video chat app Video Ref Link : https://youtu.be/ZDiQWv-hjtw?si=0ZBopLn2YgmedRzF
+3) video Recording feature Video Ref Link : https://youtu.be/AkRAdpNPwWQ?si=Aojo5-Hb8u8p1GGu
+4) Web Rtc Video Ref Link : https://youtu.be/AkRAdpNPwWQ?si=Aojo5-Hb8u8p1GGu
+5) real-time code editor Video Ref Link : https://youtu.be/p9i4GZGLxGw?si=n3oto0wCPgEHwMcA 
+
+
+
+Architecture : 
+1) Use Pages And Components Folder For Better Segregation Of The Code
