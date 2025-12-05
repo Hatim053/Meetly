@@ -2,12 +2,12 @@
                                    A complete solution for interviews and training
 
 Features : 
-1) screen sharing
-2) real-time code editor
+1) screen sharing ✅
+2) real-time code editor 
 3) real-time whiteboard
-4) video call
-5) text - chats
-6) host controlled environment
+4) video call ✅
+5) text - chats ✅
+6) host controlled environment ✅
 7) recorded meets
 
 

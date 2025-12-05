@@ -8,6 +8,10 @@ const meetingSchema = new mongoose.Schema({
     hostName : {
         type: String,
         required : true,
+    },
+    hostId : {
+        type : mongoose.Schema.Types.ObjectId,
+        required : true,
     }
 } , {timestamps : true})
 

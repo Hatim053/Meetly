@@ -29,6 +29,9 @@ function CallPage() {
     return () => cleanup();
   }, []);
 
+  socketRef.current?.on('control' , () => {
+    toggleCamera()
+  })
   async function start() {
     try {
       const localStream = await navigator.mediaDevices.getUserMedia({
@@ -95,7 +98,9 @@ function CallPage() {
           console.error("Failed to add ICE candidate", err);
         }
       }
-    });
+    })
+
+  
 
     socket.on("user-left", () => {
       cleanup();
@@ -188,6 +193,11 @@ function CallPage() {
     socketRef.current?.disconnect();
   }
 
+
+  function controlCamera() {
+    socketRef.current?.emit('control-camera' , {roomId})
+  }
+  
   return (
     <div style={{ padding: 10 }}>
       <h2>Room: {roomId}</h2>

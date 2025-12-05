@@ -3,15 +3,13 @@ import "dotenv/config";
 import connectDb from "./src/db/index.js";
 import server from "./app.js";
 
-// ---------------------------
-// Data structures
-// ---------------------------
+
+
 const rooms = {}; // roomId -> [socketId1, socketId2]
 const userSocketMap = {}; // userId -> socketId
 
-// ---------------------------
+
 // Initialize Socket.io
-// ---------------------------
 const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_SIDE_URL,
@@ -20,11 +18,11 @@ const io = new Server(server, {
   },
 });
 
-// ---------------------------
-// Socket.io connection
-// ---------------------------
+
+// Socket.io connection logic 
+
 io.on("connection", (socket) => {
-  console.log("✅ Socket connected:", socket.id);
+  console.log("Socket connected:", socket.id);
 
   // ---------------------------
   // Join Room
@@ -48,9 +46,9 @@ io.on("connection", (socket) => {
     socket.to(roomId).emit("user-joined", { userId, name });
   });
 
-  // ---------------------------
+
   // Offer
-  // ---------------------------
+
   socket.on("offer", ({ to, from, sdp }) => {
     const targetSocket = userSocketMap[to];
     if (targetSocket) {
@@ -58,9 +56,8 @@ io.on("connection", (socket) => {
     }
   });
 
-  // ---------------------------
   // Answer
-  // ---------------------------
+
   socket.on("answer", ({ to, from, sdp }) => {
     const targetSocket = userSocketMap[to];
     if (targetSocket) {
@@ -68,9 +65,9 @@ io.on("connection", (socket) => {
     }
   });
 
-  // ---------------------------
+
   // ICE Candidate
-  // ---------------------------
+
   socket.on("ice-candidate", ({ from, candidate }) => {
     const roomId = socket.data.roomId;
     if (!roomId) return;
@@ -82,9 +79,27 @@ io.on("connection", (socket) => {
     }
   });
 
-  // ---------------------------
+
+   // live chats : 
+   socket.on('sendMessage' , ({ roomId , senderName , message }) => {
+    const room = rooms[roomId]
+    if(room) { /// if room exist's then emit message
+      io.to(roomId).emit('receiveMessage' , {
+        senderName, 
+        message
+      })
+    }
+   })
+
+
+   socket.on('control-camera' , ({ roomId }) => {
+    const opponentsocketId = rooms[roomId].filter((id) => id != socket.id)
+    if(opponentsocketId) {
+      socket.to(opponentsocketId).emit('control')
+    }
+   })
+
   // Leave Room
-  // ---------------------------
   socket.on("leave-room", ({ roomId, userId }) => {
     socket.leave(roomId);
 
@@ -98,12 +113,12 @@ io.on("connection", (socket) => {
 
     // Notify others
     socket.to(roomId).emit("user-left", { userId });
-    console.log(`🛑 User ${userId} left room ${roomId}`);
+    console.log(`User ${userId} left room ${roomId}`);
   });
 
-  // ---------------------------
+
   // Disconnect
-  // ---------------------------
+
   socket.on("disconnect", () => {
     const { roomId, userId } = socket.data || {};
 
@@ -118,20 +133,19 @@ io.on("connection", (socket) => {
 
     if (userId) delete userSocketMap[userId];
 
-    console.log("❌ Socket disconnected:", socket.id);
+    console.log("Socket disconnected:", socket.id);
   });
 });
 
-// ---------------------------
+
 // Connect to DB & Start server
-// ---------------------------
 const PORT = process.env.PORT || 5000;
 const URL = process.env.MONGODB_URL;
 
 connectDb(URL)
   .then(() => {
     server.listen(PORT, () => {
-      console.log(`🚀 Server listening on port ${PORT}`);
+      console.log(`Server listening on port ${PORT}`);
     });
   })
   .catch((err) => console.error("DB connection error:", err));
