@@ -4,7 +4,7 @@ import 'dotenv/config'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import meetingRoutes from './src/routes/meeting.routes.js'
-
+import userRoutes from './src/routes/user.routes.js'
 
 const app = express()
 app.use(cookieParser())
@@ -21,7 +21,7 @@ app.use(cors({
 const server = http.createServer(app)
 
 app.use('/meetly' , meetingRoutes)
-
+app.use('/user' , userRoutes)
 // testing route
 app.get('/' , (req , res) => res.send('WebRTC signalling server is running'))
 

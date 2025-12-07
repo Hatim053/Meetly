@@ -1,8 +1,10 @@
 import React, { useState } from "react"
+import styles from './meetingEntry.module.css'
 import { useNavigate } from "react-router-dom"
+import { useSelector } from 'react-redux'
 
 function MeetingEntry() {
-    const [name , setName] = useState('')
+    const loggedInUser = useSelector(state => state.loggedInUser)
     const [joinId , setJoinId] = useState('')
     const navigate = useNavigate()
 
@@ -10,35 +12,103 @@ function MeetingEntry() {
     
     const response = await fetch(`${import.meta.env.VITE_SERVER_SIDE_URL}/meetly/create-meeting` , {
         method : 'POST',
-        headers : { 'Content-Type' : 'application/json' },
         credentials : 'include',
     })
 
      const data = await response.json()
-       navigate(`/call/:${data.meeting.roomId}` , {state : { name : name || 'Host' , isHost : true }})
+       navigate(`/call/:${data.meeting.roomId}` , {state : { name : loggedInUser.name || 'Host' , isHost : true }})
     }
 
     function joinMeeting() {
         if(! joinId) return alert('Enter Meeting Id or Url')
-            navigate(`/call/${joinId}` , { state : { name : name || 'Guest' , isHost : false } })
+            navigate(`/call/${joinId}` , { state : { name : loggedInUser.name || 'Guest' , isHost : false } })
     }
    
     return (
-    <div style={{ padding: 20 }}>
-      <h2>1:1 Video Call — Home</h2>
-      <input placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} />
-      <div style={{ marginTop: 10 }}>
-        <button onClick={createMeeting}>Create Meeting (Get Link)</button>
-      </div>
+      <div className={styles["create-room-container"]}>
+    <div className={styles["left-hand-room"]}>
+        <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay ></video>
+        <div className={styles["toggle-controls"]}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="3"/>
+  
+  {/* <!-- Mic --> */}
+  <path d="M32 41c5 0 9-4 9-9v-9c0-5-4-9-9-9s-9 4-9 9v9c0 5 4 9 9 9z" 
+        fill="currentColor"/>
 
-      <hr />
+  {/* <!-- Stem --> */}
+  <path d="M25 32c0 4 3 7 7 7s7-3 7-7" 
+        stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/>
 
-      <h3>Or join a meeting</h3>
-      <input placeholder="Room ID" value={joinId} onChange={(e) => setJoinId(e.target.value)} />
-      <div style={{ marginTop: 10 }}>
-        <button onClick={joinMeeting}>Join</button>
-      </div>
+  {/* <!-- Base --> */}
+  <line x1="32" y1="41" x2="32" y2="50" 
+        stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  <line x1="27" y1="50" x2="37" y2="50" 
+        stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="3"/>
+  
+  {/* <!-- Mic --> */}
+  <path d="M32 41c5 0 9-4 9-9v-9c0-5-4-9-9-9s-9 4-9 9v9c0 5 4 9 9 9z" 
+        fill="currentColor" opacity=".4"/>
+
+  {/* <!-- Stem --> */}
+  <path d="M25 32c0 4 3 7 7 7s7-3 7-7" 
+        stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none" opacity=".4"/>
+
+  {/* <!-- Base --> */}
+  <line x1="32" y1="41" x2="32" y2="50" 
+        stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".4"/>
+  <line x1="27" y1="50" x2="37" y2="50" 
+        stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity=".4"/>
+
+  {/* <!-- Slash --> */}
+  <line x1="20" y1="20" x2="44" y2="44" 
+        stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  {/* <!-- Circle Border --> */}
+  <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="3"/>
+
+  {/* <!-- Camera Body --> */}
+  <rect x="20" y="23" width="18" height="18" rx="4" fill="currentColor"/>
+
+  {/* <!-- Lens --> */}
+  <circle cx="29" cy="32" r="4" fill="#fff"/>
+
+  {/* <!-- External Lens Part --> */}
+  <path d="M38 27l8 -4v22l-8 -4z" fill="currentColor"/>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  {/* <!-- Circle Border --> */}
+  <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="3"/>
+
+  {/* <!-- Camera Body (dimmed) --> */}
+  <rect x="20" y="23" width="18" height="18" rx="4" fill="currentColor" opacity=".4"/>
+
+  {/* <!-- Lens --> */}
+  <circle cx="29" cy="32" r="4" fill="#fff" opacity=".4"/>
+
+  {/* <!-- External Lens Part --> */}
+  <path d="M38 27l8 -4v22l-8 -4z" fill="currentColor" opacity=".4"/>
+
+  {/* <!-- Slash --> */}
+  <line x1="20" y1="20" x2="44" y2="44" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+</svg>
+
+        </div>
     </div>
+    <div className={styles["right-hand-room"]}>
+        <button className={styles["meeting-create-btn"]} onClick={createMeeting}>Host A Meeting</button>
+        <span>or</span>
+        <div className={styles["meeting-join"]}>
+            <span>Join Meeting</span>
+            <input placeholder="paste link here" value={joinId} onChange={(e) => setJoinId(e.target.value)} className={styles["meeting-link-input"]} type="text" />
+            <button className={styles["meeting-join-btn"]} onClick={joinMeeting}>join</button>
+        </div>
+    </div>
+</div>
     )
 
 }

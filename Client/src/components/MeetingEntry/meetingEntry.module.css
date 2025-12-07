@@ -1,0 +1,73 @@
+.create-room-container{
+    margin-left: 20vw;
+    margin-right: 20vw;
+    margin-top: 17.5vh;
+    width: 60vw;
+    height: 65vh;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 0px solid black;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.create-room-container .right-hand-room button{
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #075fbd;
+    border: none;
+    color: white;
+    font-size: large;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border-radius: 10px;
+    width: 90%;
+}
+
+.left-hand-room video{
+    width: 90%;
+    height: 50vh;
+    border-radius: 5px;
+}
+
+.right-hand-room{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap: 2vh;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+.left-hand-room{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.meeting-join span{
+    font-size: larger;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.meeting-join input {
+padding: 10px;
+width: 85%;
+border-radius: 10px;
+}
+
+.meeting-join{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    align-items: center;
+}
+
+.right-hand-room > span{
+    font-size: x-large;
+}
+
+

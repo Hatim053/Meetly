@@ -1,0 +1,163 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.login-page-wrapper{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.logo-svg {
+    
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 50px;
+      letter-spacing: -2px;
+}
+.login-container{
+    width:90%;
+    max-width:1100px;
+    height:600px;
+    display:flex;
+    overflow:hidden;
+    border-radius:25px;
+    background:#fff;
+    box-shadow:0px 10px 40px rgba(0,0,0,0.12);
+}
+
+/* LEFT */
+.login-left{
+    width:50%;
+    background:url("https://ubiminds.com/site/uploads/2024/01/how-can-ai-help-me-ace-interviews.jpg");
+    background-size:cover;
+    background-position:center;
+    position:relative;
+}
+
+.image-overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient();
+    opacity:0.4;
+}
+
+.brand-name{
+    position:relative;
+    left:27%;
+    display: flex;
+    flex-direction: column;
+    bottom: 4%;
+    font-weight:700;
+    color:white;
+}
+.tagline{
+    font-weight:800;
+    font-size:30px;
+    color: black;
+    opacity:0.9;
+    position: relative;
+    right: 10%;
+    bottom: 11%;
+}
+
+/* RIGHT */
+.login-right{
+    width:50%;
+    padding:50px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items: center;
+}
+
+.welcome-text{
+    font-size:36px;
+    font-weight:700;
+    margin-bottom:25px;
+}
+
+.google-btn{
+    width:100%;
+    padding:12px;
+    border-radius:30px;
+    background:#fff;
+    border:1px solid #ccc;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    cursor:pointer;
+    font-weight:500;
+}
+
+.divider{
+    text-align:center;
+    margin:15px 0;
+    color:#777;
+}
+
+form label{
+    display:block;
+    font-size:14px;
+    font-weight:500;
+    margin:10px 0 5px;
+}
+
+form input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    outline:none;
+    font-size:15px;
+}
+
+.input-password{
+    display:flex;
+    align-items:center;
+    padding-right:12px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+.input-password input{
+    border:none;
+    outline:none;
+    width:90%;
+}
+
+.login-btn{
+    margin-top:20px;
+    width:100%;
+    padding:14px;
+    background:#6b4df7;
+    color:white;
+    border:none;
+    border-radius:25px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.account-status{
+    text-align:center;
+    margin-top:15px;
+    font-size:14px;
+}
+
+.account-status a{
+    text-decoration:none;
+    color:#6a5af9;
+}
+
+.social-icons{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    opacity:0.7;
+    margin-top:20px;
+}

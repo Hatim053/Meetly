@@ -27,11 +27,17 @@ if(! email || ! password) {
     })
 }
 
-const user = await User.findOne({email : email}).select("-refreshToken -password")
+const user = await User.findOne({email : email}).select("-refreshToken")
 if(! user) {
-    // redirect to signup because no user exist in the database
+   return res
+   .status(405)
+   .json({
+    status : 405,
+    message : `user doesn't exists`,
+   })
 }
-
+console.log('plain password : ' , password)
+console.log('DB password : ' , user.password)
 const validatePassword = await user.isPasswordCorrect(password)
 if(! validatePassword) {
     return res
@@ -42,7 +48,7 @@ if(! validatePassword) {
     })
 }
 
-const { refreshToken , accessToken } = await generateAccessAndRefreshToken()
+const { refreshToken , accessToken } = await generateAccessAndRefreshToken(user)
 return res
 .status(200)
 .cookie('accessToken' , accessToken , options)
@@ -69,6 +75,19 @@ if(! email || ! name || ! password) {
     })
 }
 
+console.log(email , name , password)
+// check if user already exists
+
+const existingUser = await User.findOne({email : email})
+if(existingUser) {
+    return res
+    .status(405)
+    .json({
+        status : 405,
+        message : 'user already existed',
+    })
+}
+
 const user = await User.create({
     email,
     name,
@@ -84,6 +103,7 @@ if(! user) {
     })
 }
 
+console.log(user)
 return res
 .status(201)
 .json({
@@ -91,4 +111,10 @@ return res
     message : 'user registered successfully'
 })
 
+}
+
+
+export {
+    handleUserLogin,
+    handleUserSignup,
 }

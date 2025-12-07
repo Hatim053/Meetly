@@ -1,0 +1,175 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.signup-page-wrapper {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signup-container{
+    width:90%;
+    max-width:1100px;
+    height:600px;
+    display:flex;
+    border-radius:25px;
+    overflow:hidden;
+    background:#fff;
+    box-shadow:0px 10px 40px rgba(0,0,0,0.15);
+}
+
+/* LEFT SECTION */
+.left-section{
+    width:50%;
+    background:url("https://ubiminds.com/site/uploads/2024/01/how-can-ai-help-me-ace-interviews.jpg");
+    background-size:cover;
+    background-position:center;
+    position:relative;
+}
+
+.left-section .overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(120deg);
+    opacity:0.25;
+}
+
+.left-section .content{
+    position:absolute;
+    bottom: 75%;
+    left: 17%;
+    display: flex;
+    flex-direction: column;
+    margin-left:40px;
+    color : black;
+    font-weight: 900;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.left-section h1{
+    font-size:42px;
+}
+
+.left-section p{
+    font-size:17px;
+    margin:10px 0;
+    max-width:330px;
+}
+
+.tagline{
+    font-weight:800;
+    font-size:30px;
+    opacity:0.9;
+    position: relative;
+    right: 15%;
+}
+
+
+/* RIGHT SECTION */
+.right-section{
+    width:50%;
+    padding:50px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.form-box h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.google-btn{
+    width:100%;
+    padding:12px;
+    border-radius:30px;
+    background:#fff;
+    border:1px solid #ccc;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    cursor:pointer;
+    font-weight:500;
+}
+
+.divider{
+    text-align:center;
+    margin:15px 0;
+    color:#777;
+}
+
+form label{
+    font-size:14px;
+    font-weight:500;
+    margin:10px 0 5px;
+    display:block;
+}
+
+form input{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    outline:none;
+    font-size:15px;
+}
+
+.input-password{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding-right:15px;
+}
+
+.input-password input{
+    border:none;
+    outline:none;
+    width:90%;
+}
+
+.primary-btn{
+    width:100%;
+    margin-top:20px;
+    padding:14px;
+    border:none;
+    border-radius:25px;
+    background:#6a5af9;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.login-text{
+    text-align:center;
+    margin-top:10px;
+    font-size:14px;
+}
+
+.login-text a{
+    color:#6a5af9;
+    text-decoration:none;
+}
+
+.social-links{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    opacity:0.7;
+    margin-top:20px;
+}
+
+.logo-svg{
+         font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 80px;
+      letter-spacing: -2px;
+}
