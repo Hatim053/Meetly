@@ -1,7 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
-import { io } from "socket.io-client";
-import { v4 as uuidv4 } from "uuid";
+import React, { useEffect, useRef, useState } from "react"
+import { useParams, useLocation } from "react-router-dom"
+import { io } from "socket.io-client"
+import { v4 as uuidv4 } from "uuid"
+import WhiteBoard from '../WhiteBoard/WhiteBoard.jsx'
+import { useDispatch , useSelector } from "react-redux"
+import { addRoomId } from '../../../user/roomSlice.js'
 
 const ICE_SERVERS = {
   iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
@@ -11,7 +14,10 @@ function CallPage() {
   const { roomId } = useParams();
   const location = useLocation();
   const name = location.state?.name || "Anonymous";
-
+  const dispatch = useDispatch()
+  dispatch(addRoomId(roomId))
+  console.log(roomId)
+const loggedInUser = useSelector(state => state.loggedInUser)
   const localVideoRef = useRef();
   const remoteVideoRef = useRef();
   const pcRef = useRef(null);
@@ -29,113 +35,158 @@ function CallPage() {
     return () => cleanup();
   }, []);
 
+
+async function start() {
+  try {
+    const localStream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
+    });
+    localStreamRef.current = localStream;
+    localVideoRef.current.srcObject = localStream;
+  } catch (err) {
+    alert("Could not access camera/mic: " + err.message);
+    return;
+  }
+
+  socketRef.current = io(import.meta.env.VITE_SERVER_SIDE_URL);
+  const socket = socketRef.current;
+
+  socket.on("connect", () => {
+    socket.emit("join-room", {
+      roomId,
+      userId: loggedInUser._id,
+      name: loggedInUser.name,
+    });
+  });
+
+  // Store own ID
+  userIdRef.current = loggedInUser._id;
+
+  // Get list of users already in room
+  socket.on("room-users", ({ users }) => {
+    const remote = users.find((u) => u !== userIdRef.current);
+    if (remote) remoteUserIdRef.current = remote;
+  });
+
+  // When new user joins
+  socket.on("user-joined", async ({ userId: otherUserId }) => {
+    if (!pcRef.current) await ensurePeerConnection();
+
+    // Ensure only one peer creates an offer (stable initiator rule)
+    const isInitiator = userIdRef.current.localeCompare(otherUserId) === 1;
+    if (!isInitiator) return;
+
+    console.log("Sending offer to:", otherUserId);
+
+    const offer = await pcRef.current.createOffer();
+    await pcRef.current.setLocalDescription(offer);
+
+    socket.emit("offer", {
+      to: otherUserId,
+      from: userIdRef.current,
+      sdp: offer,
+    });
+  });
+
+  // When receiving offer
+  socket.on("offer", async ({ from, sdp }) => {
+    console.log("Received Offer from", from);
+
+    remoteUserIdRef.current = from;
+    await ensurePeerConnection();
+
+    if (!pcRef.current.currentRemoteDescription) {
+      await pcRef.current.setRemoteDescription(new RTCSessionDescription(sdp));
+    }
+
+    const answer = await pcRef.current.createAnswer();
+    await pcRef.current.setLocalDescription(answer);
+
+    socket.emit("answer", {
+      to: from,
+      from: userIdRef.current,
+      sdp: answer,
+    });
+  });
+
+  // When receiving answer
+  socket.on("answer", async ({ from, sdp }) => {
+    console.log("Received Answer from", from);
+
+    if (!pcRef.current.currentRemoteDescription) {
+      await pcRef.current.setRemoteDescription(new RTCSessionDescription(sdp));
+    }
+  });
+
+  // When receiving ICE candidate
+  socket.on("ice-candidate", async ({ candidate, from }) => {
+    if (candidate && pcRef.current) {
+      try {
+        await pcRef.current.addIceCandidate(new RTCIceCandidate(candidate));
+      } catch (err) {
+        console.error("Failed to add ICE candidate", err);
+      }
+    }
+  });
+
+  // If user leaves
+  socket.on("user-left", () => {
+    cleanup();
+    alert("User disconnected.");
+  });
+}
+
   socketRef.current?.on('control' , () => {
     toggleCamera()
   })
-  async function start() {
-    try {
-      const localStream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true,
-      });
-      localStreamRef.current = localStream;
-      localVideoRef.current.srcObject = localStream;
-    } catch (err) {
-      alert("Could not access camera/mic: " + err.message);
-      return;
-    }
+ async function ensurePeerConnection() {
+  if (pcRef.current) return;
 
-    socketRef.current = io(import.meta.env.VITE_SERVER_SIDE_URL);
-    const socket = socketRef.current;
-    const myId = userIdRef.current;
+  console.log("Creating new PeerConnection...");
 
-    socket.on("connect", () => {
-      socket.emit("join-room", { roomId, userId: myId, name });
-    });
-
-    // Who is already in the room
-    socket.on("room-users", ({ users }) => {
-      const remoteId = users.find((id) => id !== userIdRef.current);
-      if (remoteId) remoteUserIdRef.current = remoteId;
-    });
-
-    // New user joined -> this user creates offer
-    socket.on("user-joined", async ({ userId: otherUserId }) => {
-      if (otherUserId === userIdRef.current) return;
-      remoteUserIdRef.current = otherUserId;
-      await ensurePeerConnection();
-
-      const offer = await pcRef.current.createOffer();
-      await pcRef.current.setLocalDescription(offer);
-
-      socket.emit("offer", {
-        to: otherUserId,
-        from: userIdRef.current,
-        sdp: offer,
-      });
-    });
-
-    socket.on("offer", async ({ from, sdp }) => {
-      remoteUserIdRef.current = from;
-      await ensurePeerConnection();
-      await pcRef.current.setRemoteDescription(new RTCSessionDescription(sdp));
-
-      const answer = await pcRef.current.createAnswer();
-      await pcRef.current.setLocalDescription(answer);
-
-      socket.emit("answer", { to: from, from: userIdRef.current, sdp: answer });
-    });
-
-    socket.on("answer", async ({ from, sdp }) => {
-      await pcRef.current.setRemoteDescription(new RTCSessionDescription(sdp));
-    });
-
-    socket.on("ice-candidate", async ({ candidate }) => {
-      if (candidate && pcRef.current) {
-        try {
-          await pcRef.current.addIceCandidate(new RTCIceCandidate(candidate));
-        } catch (err) {
-          console.error("Failed to add ICE candidate", err);
-        }
-      }
-    })
-
-  
-
-    socket.on("user-left", () => {
-      cleanup();
-      alert("User disconnected.");
-    });
-  }
-
-  async function ensurePeerConnection() {
-    if (pcRef.current) return;
-
-    pcRef.current = new RTCPeerConnection(ICE_SERVERS);
-
-    // Add local tracks
-    localStreamRef.current.getTracks().forEach((track) => {
-      pcRef.current.addTrack(track, localStreamRef.current);
-    });
-
-    // Set remote stream
+  pcRef.current = new RTCPeerConnection(ICE_SERVERS);
+ pcRef.current.oniceconnectionstatechange = () => {
+    console.log("🧊 ICE State:", pcRef.current.iceConnectionState);
+  };
+  // ---- 1️⃣ Create remote stream if not exists ----
+  if (!remoteStreamRef.current) {
+    remoteStreamRef.current = new MediaStream();
     remoteVideoRef.current.srcObject = remoteStreamRef.current;
-
-    pcRef.current.ontrack = (event) => {
-      remoteStreamRef.current = event.streams[0];
-      remoteVideoRef.current.srcObject = remoteStreamRef.current;
-    };
-
-    pcRef.current.onicecandidate = (event) => {
-      if (event.candidate && remoteUserIdRef.current) {
-        socketRef.current.emit("ice-candidate", {
-          to: remoteUserIdRef.current,
-          from: userIdRef.current,
-          candidate: event.candidate,
-        });
-      }
-    };
   }
+
+  // ---- 2️⃣ Add local tracks ----
+  localStreamRef.current.getTracks().forEach((track) => {
+    pcRef.current.addTrack(track, localStreamRef.current);
+  });
+
+  // ---- 3️⃣ Handle incoming remote tracks ----
+  pcRef.current.ontrack = (event) => {
+    console.log("📩 Received remote track!");
+
+    event.streams[0].getTracks().forEach((track) => {
+      remoteStreamRef.current.addTrack(track);
+    });
+
+    remoteVideoRef.current.srcObject = remoteStreamRef.current;
+  };
+
+  // ---- 4️⃣ Send ICE candidates ----
+  pcRef.current.onicecandidate = (event) => {
+    if (event.candidate) {
+       console.log("Generated ice candidate:", event.candidate);
+
+      socketRef.current.emit("ice-candidate", {
+        to: remoteUserIdRef.current,
+        from: userIdRef.current,
+        candidate: event.candidate,
+      });
+    }
+  };
+
+  console.log("PeerConnection ready");
+}
+
 
   async function toggleScreenShare() {
     if (!sharingScreen) {
@@ -229,8 +280,9 @@ function CallPage() {
         <p>Share this link:</p>
         <input readOnly value={`${window.location.origin}/call/${roomId}`} style={{ width: "80%" }} />
       </div>
+     <WhiteBoard />
     </div>
-  );
+  )
 }
 
 export default CallPage;

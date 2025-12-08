@@ -30,11 +30,13 @@ io.on("connection", (socket) => {
   socket.on("join-room", ({ roomId, userId, name }) => {
     socket.data.roomId = roomId;
     socket.data.userId = userId;
+ console.log("JOIN:", typeof socket.data.roomId, socket.data.roomId);
 
     userSocketMap[userId] = socket.id;
-
+    console.log('at the time of joining room',userSocketMap[userId] , userId)
     if (!rooms[roomId]) rooms[roomId] = [];
     if (!rooms[roomId].includes(socket.id)) rooms[roomId].push(socket.id);
+    // console.log(rooms[roomId])
 
     socket.join(roomId);
 
@@ -69,6 +71,7 @@ io.on("connection", (socket) => {
   // ICE Candidate
 
   socket.on("ice-candidate", ({ from, candidate }) => {
+      console.log("📩 ICE Received for:", from, candidate);
     const roomId = socket.data.roomId;
     if (!roomId) return;
 
@@ -98,6 +101,21 @@ io.on("connection", (socket) => {
       socket.to(opponentsocketId).emit('control')
     }
    })
+
+   // white-board events logic
+   socket.on('draw' , ({x,y , roomId , userId}) => {
+      const users = rooms[roomId]
+    //  console.log('at the time of draw event',userSocketMap[userId] , userId)
+    //  console.log(rooms[roomId])
+     const others = rooms[roomId].filter((id) => id != userSocketMap[userId])
+    socket.to(others).emit('on-draw' , {x , y})
+   }) 
+
+  socket.on('mouse-down' , ({x , y , roomId}) => {
+    const users = rooms[roomId]
+    const others = users.filter((id) => id != socket.id)
+    socket.to(others).emit('on-mouse-down' , {x , y})
+  })
 
   // Leave Room
   socket.on("leave-room", ({ roomId, userId }) => {
