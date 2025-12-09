@@ -3,6 +3,7 @@ import { useParams, useLocation } from "react-router-dom"
 import { io } from "socket.io-client"
 import { v4 as uuidv4 } from "uuid"
 import WhiteBoard from '../WhiteBoard/WhiteBoard.jsx'
+import CodeEditor from "../CodeEditor/CodeEditor.jsx"
 import { useDispatch , useSelector } from "react-redux"
 import { addRoomId } from '../../../user/roomSlice.js'
 
@@ -281,6 +282,7 @@ async function start() {
         <input readOnly value={`${window.location.origin}/call/${roomId}`} style={{ width: "80%" }} />
       </div>
      <WhiteBoard />
+     <CodeEditor />
     </div>
   )
 }

@@ -1,12 +1,12 @@
-import { Server } from "socket.io";
-import "dotenv/config";
-import connectDb from "./src/db/index.js";
-import server from "./app.js";
+import { Server } from "socket.io"
+import "dotenv/config"
+import connectDb from "./src/db/index.js"
+import server from "./app.js"
 
 
 
-const rooms = {}; // roomId -> [socketId1, socketId2]
-const userSocketMap = {}; // userId -> socketId
+const rooms = {} // roomId -> [socketId1, socketId2]
+const userSocketMap = {} // userId -> socketId
 
 
 // Initialize Socket.io
@@ -16,7 +16,7 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
     credentials: true,
   },
-});
+})
 
 
 // Socket.io connection logic 
@@ -94,7 +94,7 @@ io.on("connection", (socket) => {
     }
    })
 
-
+  
    socket.on('control-camera' , ({ roomId }) => {
     const opponentsocketId = rooms[roomId].filter((id) => id != socket.id)
     if(opponentsocketId) {
@@ -103,6 +103,7 @@ io.on("connection", (socket) => {
    })
 
    // white-board events logic
+   // as someone start drawing 
    socket.on('draw' , ({x,y , roomId , userId}) => {
       const users = rooms[roomId]
     //  console.log('at the time of draw event',userSocketMap[userId] , userId)
@@ -115,6 +116,45 @@ io.on("connection", (socket) => {
     const users = rooms[roomId]
     const others = users.filter((id) => id != socket.id)
     socket.to(others).emit('on-mouse-down' , {x , y})
+  })
+
+  socket.on('clear' , ({roomId}) => {
+    const users = rooms[roomId]
+    const others = users.filter((id) => id != socket.id)
+    socket.to(others).emit('on-clear')
+  })  
+  
+  
+
+  // code editor events logic
+  // socket event when someone is writing code
+  socket.on('code-change' , ({code , roomId , userId}) => {
+    const users = rooms[roomId]
+    console.log(users)
+    const others = users.filter((id) => id != userSocketMap[userId])
+    socket.to(others).emit('on-code-change' , ({codeValue : code}))
+  })
+
+  // socket event when someone changes language
+  socket.on('language-change' , ({language , roomId}) => {
+    const users = rooms[roomId]
+    const others = users.filter((id) => id != socket.id)
+    socket.to(others).emit('on-language-change' , ({languageValue : language}))
+  })
+
+  // socket event when someone starts typing
+  socket.on('typing' , ({name , roomId}) => {
+    const users = rooms[roomId]
+    const others = users.filter((id) => id != socket.id)
+    socket.to('on-typing' , ({name}))
+  })
+  
+  // socket event when code gets complied
+  socket.on('run' , ({roomId , outputValue}) => {
+    const users = rooms[roomId]
+    const others = users.filter((id) => id != socket.id)
+    console.log(outputValue)
+    socket.to(others).emit('on-run' , ({outputValue}))
   })
 
   // Leave Room
@@ -157,13 +197,13 @@ io.on("connection", (socket) => {
 
 
 // Connect to DB & Start server
-const PORT = process.env.PORT || 5000;
-const URL = process.env.MONGODB_URL;
+const PORT = process.env.PORT || 5000
+const URL = process.env.MONGODB_URL
 
 connectDb(URL)
   .then(() => {
     server.listen(PORT, () => {
-      console.log(`Server listening on port ${PORT}`);
-    });
+      console.log(`Server listening on port ${PORT}`)
+    })
   })
-  .catch((err) => console.error("DB connection error:", err));
+  .catch((err) => console.error("DB connection error:", err))

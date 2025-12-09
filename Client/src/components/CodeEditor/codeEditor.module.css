@@ -1,0 +1,140 @@
+:root {
+  --bg-light: #f5f5f5;
+  --bg-dark: #1e1e1e;
+  --text-light: #333;
+  --text-dark: #e5e5e5;
+  --accent: #4f46e5;
+  --border: #ccc;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: var(--bg-light);
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dark {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+.toolbar {
+  width: 80vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.05);
+}
+
+.dark .toolbar {
+  background: rgba(255,255,255,0.08);
+}
+
+.language-select {
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+.run-btn {
+  margin-left: 10px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  background: var(--accent);
+  border: none;
+  color: white;
+}
+
+.theme-toggle {
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  border: none;
+  background: none;
+}
+
+.typing-status {
+  font-size: 14px;
+  opacity: 0.6;
+  margin-right: 10px;
+}
+
+/* -------- MAIN LAYOUT -------- */
+
+.main-container {
+  width: 80vw;
+  height: 75vh;
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* ---------- EDITOR ----------- */
+
+.editor-container {
+  width: 60%;
+  height: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow-y: auto;
+}
+
+.editor {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 14px;
+  background: inherit;
+  color: inherit;
+  font-size: 15px;
+  font-family: monospace;
+}
+
+/* ---------- OUTPUT ----------- */
+
+.output-section {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow-y: auto;
+  background: rgba(0,0,0,0.03);
+}
+
+.dark .output-section {
+  background: rgba(255,255,255,0.05);
+}
+
+.output-header {
+  padding: 10px;
+  background: var(--accent);
+  color: white;
+  border-radius: 8px 8px 0 0;
+  font-weight: bold;
+  position: sticky;
+  top: 0; 
+}
+
+.output-console {
+  margin: 0;
+  padding: 10px;
+  font-family: monospace;
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+
+

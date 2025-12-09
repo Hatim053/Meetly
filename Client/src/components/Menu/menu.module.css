@@ -1,0 +1,21 @@
+.top-menu {
+  width: 75vw;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 15px 0;
+}
+
+.mode-btn {
+  background: #202020;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  transition: 0.3s;
+}
+
+.mode-btn:hover {
+  background: #333;
+}

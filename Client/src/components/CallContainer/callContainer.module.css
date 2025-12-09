@@ -1,0 +1,12 @@
+.call-container {
+  width: 75vw;
+  height: 80vh;
+  background: #111;
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+  margin: 20px ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

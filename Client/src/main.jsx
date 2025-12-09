@@ -8,7 +8,6 @@ import CallPage from './components/CallPage/CallPage.jsx'
 import ChatBox from './components/ChatBox/ChatBox.jsx'
 import Login from './components/Login/Login.jsx'
 import Signup from './components/Signup/Signup.jsx'
-// import WhiteBoard from './components/WhiteBoard/WhiteBoard.jsx'
 import { Provider } from 'react-redux'
 import { store } from '../app/store.js'
 
@@ -37,10 +36,7 @@ const router = createBrowserRouter([
     path: '/chat-box',
     element: <ChatBox />
   },
-  // {
-  //   path : '/white-board',
-  //   element : <WhiteBoard />
-  // },
+
 ])
 
 createRoot(document.getElementById('root')).render(
