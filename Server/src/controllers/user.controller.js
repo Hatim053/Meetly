@@ -114,7 +114,28 @@ return res
 }
 
 
+const handleUserLogout = async (req , res) => {
+    const {userId} = req?.user?._id
+    const user = await User.findByIdAndUpdate(
+        userId,
+        {$set : {refreshToken : 1}},
+        {new : true}
+    )
+    
+    return res
+    .clearCookie('refreshToken')
+    .clearCookie('accessToken')
+    .status(200)
+    .json({
+        status : 200,
+        message : 'User Logout Successfully',
+    })
+
+}
+
+
 export {
     handleUserLogin,
     handleUserSignup,
+    handleUserLogout,
 }

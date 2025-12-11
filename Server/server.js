@@ -30,13 +30,13 @@ io.on("connection", (socket) => {
   socket.on("join-room", ({ roomId, userId, name }) => {
     socket.data.roomId = roomId;
     socket.data.userId = userId;
- console.log("JOIN:", typeof socket.data.roomId, socket.data.roomId);
+//  console.log("JOIN:", typeof socket.data.roomId, socket.data.roomId);
 
     userSocketMap[userId] = socket.id;
     console.log('at the time of joining room',userSocketMap[userId] , userId)
     if (!rooms[roomId]) rooms[roomId] = [];
     if (!rooms[roomId].includes(socket.id)) rooms[roomId].push(socket.id);
-    // console.log(rooms[roomId])
+    console.log(rooms[roomId])
 
     socket.join(roomId);
 

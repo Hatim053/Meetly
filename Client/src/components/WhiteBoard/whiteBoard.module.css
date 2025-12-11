@@ -11,9 +11,12 @@ body {
 .toolbar {
   width: 80vw;
   display: flex;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
   gap: 10px;
+  position: relative;
+  left: 2.1vw;
+  top: 2.8vh;
   padding: 10px;
   border-radius: 8px;
   background: #ffffff;
@@ -53,5 +56,5 @@ canvas {
   border: 2px solid #ddd;
   border-radius: 8px;
   width: 80vw;
-  height: 75vh;
+  height: 76vh;
 }

@@ -1,7 +1,7 @@
 .create-room-container{
     margin-left: 20vw;
     margin-right: 20vw;
-    margin-top: 17.5vh;
+    margin-top: 5vh;
     width: 60vw;
     height: 65vh;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -58,6 +58,16 @@ width: 85%;
 border-radius: 10px;
 }
 
+.toggle-controls{
+    display: flex;
+    gap: 20px;
+}
+
+.toggle-controls button {
+    background: none;
+    border:  none;
+    cursor: pointer;
+}
 .meeting-join{
     width: 100%;
     display: flex;

@@ -1,8 +1,20 @@
 import React from "react"
 import styles from './header.module.css'
+import { useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 function Header() {
-
+const navigate = useNavigate()
+const loggedInUser = useSelector(state => state.loggedInUser)
+  
+async function handleUserLogout() {
+const response = await fetch(`${import.meta.env.VITE_SERVER_SIDE_URL}/user/logout` , {
+  method : 'POST',
+  credentials : 'include'
+})
+const data = await response.json()
+if(data.status == 200) navigate('/login')
+}
 
     return (
         <>
@@ -23,8 +35,9 @@ function Header() {
    <div className={styles["theme"]}>theme</div>
         </div>
         <div className={styles["right-header"]}>
-            <button className={styles["login-btn"]}>login</button>
-            <button className={styles["signup-btn"]}>signup</button>
+           {!loggedInUser && <button className={styles["login-btn"]} onClick={() => navigate('/login')}>login</button>} 
+           {!loggedInUser && <button className={styles["signup-btn"]} onClick={() => navigate('/signup')}>signup</button>} 
+           {loggedInUser && <button className={styles["signup-btn"]} onClick={handleUserLogout}>logout</button>}
         </div>
     </div>
         </>

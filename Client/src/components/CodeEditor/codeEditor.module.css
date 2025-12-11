@@ -23,14 +23,17 @@ body {
 }
 
 .toolbar {
-  width: 80vw;
+  width: 75vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px;
+  padding: 22px;
+  bottom: 2vh;
+  position: relative;
+     
   margin-top: 10px;
   border-radius: 6px;
-  background: rgba(0,0,0,0.05);
+  background: white;
 }
 
 .dark .toolbar {
@@ -72,10 +75,10 @@ body {
 /* -------- MAIN LAYOUT -------- */
 
 .main-container {
-  width: 80vw;
-  height: 75vh;
+  width: 75vw;
+  height: 85vh;
   display: flex;
-  gap: 10px;
+  gap: 5px;
   margin-top: 10px;
 }
 
@@ -100,6 +103,7 @@ body {
   color: inherit;
   font-size: 15px;
   font-family: monospace;
+  border-radius: 5px;
 }
 
 /* ---------- OUTPUT ----------- */
@@ -112,7 +116,7 @@ body {
   border: 1px solid var(--border);
   border-radius: 8px;
   overflow-y: auto;
-  background: rgba(0,0,0,0.03);
+  background: white;
 }
 
 .dark .output-section {

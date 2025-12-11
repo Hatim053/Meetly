@@ -1,9 +1,11 @@
 .top-menu {
   width: 75vw;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   gap: 12px;
+  margin-left: 10vw;
   margin: 15px 0;
+
 }
 
 .mode-btn {
@@ -11,6 +13,9 @@
   color: white;
   padding: 10px 18px;
   border-radius: 6px;
+  margin-right: 20px;
+  position: relative;
+  left: 38%;
   cursor: pointer;
   border: none;
   transition: 0.3s;

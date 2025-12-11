@@ -2,13 +2,20 @@ import React from "react"
 import styles from './banner.module.css'
 import bannerImg from './img_index_banner.03ccd64.png'
 import { useNavigate } from "react-router-dom"
+import { useSelector } from 'react-redux'
 
 function Banner() {
 
   const navigate = useNavigate()
+  const loggedInUser = useSelector(state => state.loggedInUser)
 
   function redirectToMeet() {
-    navigate('/create')
+    if(! loggedInUser) {
+     navigate('/login')
+    } else {
+     navigate('/create')
+    }
+    
   }
 
     return (

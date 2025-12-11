@@ -10,27 +10,33 @@ import Login from './components/Login/Login.jsx'
 import Signup from './components/Signup/Signup.jsx'
 import { Provider } from 'react-redux'
 import { store } from '../app/store.js'
+import Banner from './components/Banner/Banner.jsx'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: < App />,
-  },
-     {
-        path: '/call/:roomId',
-        element: <CallPage />,
-      },
-  {
-        path : '/create',
-        element: <MeetingEntry />,
-      },
-       {
-    path : '/login',
-    element : <Login />,
+    children : [
+      {
+        index : true,
+        element : <Banner />
+      },{
+       path : '/create',
+       element : <MeetingEntry />,
+      }
+    ]
   },
   {
-    path : '/signup',
-    element : <Signup />,
+    path: '/call/:roomId',
+    element: <CallPage />,
+  },
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/signup',
+    element: <Signup />,
   },
   {
     path: '/chat-box',
