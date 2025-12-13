@@ -41,8 +41,11 @@ io.on("connection", (socket) => {
     socket.join(roomId);
 
     // Send existing users to the joining client
-    const others = rooms[roomId].filter((id) => id !== socket.id);
-    socket.emit("room-users", { users: others });
+    const otherSocketIds = rooms[roomId].filter((id) => id !== socket.id);
+    const otherUserIds = otherSocketIds
+      .map((sockId) => Object.keys(userSocketMap).find((uId) => userSocketMap[uId] === sockId))
+      .filter(Boolean);
+    socket.emit("room-users", { users: otherUserIds });
 
     // Notify other users in the room
     socket.to(roomId).emit("user-joined", { userId, name });
@@ -68,27 +71,23 @@ io.on("connection", (socket) => {
   });
 
 
-  // ICE Candidate
+  socket.on("ice-candidate", ({ to, from, candidate }) => {
+  const targetSocket = userSocketMap[to];
+  if (targetSocket) {
+    io.to(targetSocket).emit("ice-candidate", { from, candidate });
+  }
+});
 
-  socket.on("ice-candidate", ({ from, candidate }) => {
-      console.log("📩 ICE Received for:", from, candidate);
-    const roomId = socket.data.roomId;
-    if (!roomId) return;
 
-    // Find the other socket in the room
-    const otherSocket = rooms[roomId].find((id) => id !== socket.id);
-    if (otherSocket) {
-      io.to(otherSocket).emit("ice-candidate", { from, candidate });
-    }
-  });
 
 
    // live chats : 
-   socket.on('sendMessage' , ({ roomId , senderName , message }) => {
+   socket.on('sendMessage' , ({ roomId , senderId , senderName , message }) => {
     const room = rooms[roomId]
     if(room) { /// if room exist's then emit message
       io.to(roomId).emit('receiveMessage' , {
         senderName, 
+        senderId ,
         message
       })
     }
@@ -124,7 +123,7 @@ io.on("connection", (socket) => {
     socket.to(others).emit('on-clear')
   })  
   
-  
+
 
   // code editor events logic
   // socket event when someone is writing code

@@ -11,6 +11,7 @@ import WhiteBoard from '../WhiteBoard/WhiteBoard.jsx'
 function CallContainer({ localVideoRef , remoteVideoRef , toggleMute , toggleCamera , leaveCall , toggleScreenShare , muted , cameraOff , sharingScreen }) {
   const [menu, setMenu] = useState("call"); // call | codeeditor | whiteboard
   const [hiddenClass , setHiddenClass] = useState(false)
+  console.log('call container ' , remoteVideoRef.current)
     return (
         <> 
         <div className={styles["call-container-wrapper"]}>

@@ -19,14 +19,15 @@ function MeetingEntry() {
 
             const data = await response.json()
             if (data.status == 200) {
+                  console.log('roomId' , data.meeting.roomId)
                   navigate(`/call/:${data.meeting.roomId}`, { state: { name: loggedInUser.name || 'Host', isHost: true } })
             }
       }
 
       function joinMeeting() {
-            console.log(joinId.substring(22))
+            console.log('joinId'  , joinId.substring(27))
             if (!joinId) return alert('Enter Meeting Id or Url')
-            navigate(`/call/${joinId.substring(26)}`, { state: { name: loggedInUser?.name || 'Guest', isHost: false } })
+            navigate(`/call/${joinId.substring(27)}`, { state: { name: loggedInUser?.name || 'Guest', isHost: false } })
       }
 
       return (

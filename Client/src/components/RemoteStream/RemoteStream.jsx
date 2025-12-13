@@ -2,8 +2,7 @@ import React from "react"
 import styles from './remoteStream.module.css'
 
 function RemoteStream({remoteVideoRef , hiddenClass}) {
-console.log(remoteVideoRef.current
-)
+console.log(remoteVideoRef.current)
 
     return (
   <div className={`${styles["remote-video-wrapper"]} ${hiddenClass && styles['hide']}`} id="remoteWrapper">

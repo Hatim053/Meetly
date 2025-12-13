@@ -38,7 +38,7 @@ const pendingCandidatesRef = useRef([]);
   const [cameraOff, setCameraOff] = useState(false);
   const [sharingScreen, setSharingScreen] = useState(false);
 
-  // ---------- Mount: get media & connect socket ----------
+
   useEffect(() => {
     let mounted = true;
 
@@ -51,6 +51,8 @@ const pendingCandidatesRef = useRef([]);
     alert("Camera/Mic error: " + err.message);
     return;
   }
+     // Create PeerConnection
+      await ensurePeerConnection();
 
   // SOCKET CONNECTION
   socketRef.current = io(import.meta.env.VITE_SERVER_SIDE_URL);
@@ -74,8 +76,7 @@ const pendingCandidatesRef = useRef([]);
       console.log("Found remote user:", other);
       remoteUserIdRef.current = other;
 
-      // Create PeerConnection
-      await ensurePeerConnection();
+   
 
       // YOU create the offer only if you're initiator
       const isInitiator = String(userIdRef.current) < String(other);
@@ -98,7 +99,7 @@ const pendingCandidatesRef = useRef([]);
   socket.on("user-joined", async ({ userId: otherId }) => {
     console.log("User joined:", otherId);
     remoteUserIdRef.current = otherId;
-    await ensurePeerConnection();
+    // await ensurePeerConnection();
   });
 
   // RECEIVED OFFER
@@ -106,7 +107,7 @@ const pendingCandidatesRef = useRef([]);
     console.log("Received Offer from:", from);
 
     remoteUserIdRef.current = from;
-    await ensurePeerConnection();
+    // await ensurePeerConnection();
 
     await pcRef.current.setRemoteDescription(new RTCSessionDescription(sdp));
 
@@ -156,7 +157,7 @@ const pendingCandidatesRef = useRef([]);
 
 
     if (mounted) start();
-
+     
     return () => {
       mounted = false;
       // full cleanup
@@ -165,7 +166,7 @@ const pendingCandidatesRef = useRef([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // run once
 
-  // ---------- create PeerConnection & wiring ----------
+
  async function ensurePeerConnection() {
   if (pcRef.current) return;
 
@@ -213,7 +214,6 @@ const pendingCandidatesRef = useRef([]);
 }
 
 
-  // ---------- toggles ----------
   function toggleMute() {
     localStreamRef.current?.getAudioTracks().forEach((t) => (t.enabled = !t.enabled));
     setMuted((p) => !p);
@@ -268,7 +268,7 @@ const pendingCandidatesRef = useRef([]);
     }
   }
 
-  // ---------- cleanup helpers ----------
+
   function cleanupPeer() {
     try {
       pcRef.current?.close();
@@ -315,7 +315,7 @@ const pendingCandidatesRef = useRef([]);
     socketRef.current?.emit("control-camera", { roomId });
   }
 
-  // ---------- UI ----------
+ 
   return (
     <>
       <div className={styles["call-page-container"]}>
