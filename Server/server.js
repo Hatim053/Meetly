@@ -94,10 +94,10 @@ io.on("connection", (socket) => {
    })
 
   
-   socket.on('control-camera' , ({ roomId }) => {
+   socket.on('control-camera' , ({ roomId , hostId }) => {
     const opponentsocketId = rooms[roomId].filter((id) => id != socket.id)
     if(opponentsocketId) {
-      socket.to(opponentsocketId).emit('control')
+      socket.to(opponentsocketId).emit('on-control-camera' , ({hostId}))
     }
    })
 

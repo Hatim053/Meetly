@@ -1,6 +1,7 @@
 .call-page-container {
-    width: 100vw;
+    width: 98vw;
     height: 100vh;
     overflow: hidden;
     display: flex;
+    align-items: center;
 }

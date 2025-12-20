@@ -7,7 +7,7 @@ const handleCreateMeeting = async (req , res) => {
 
   const host = req?.user
       try {
-        const { hostName } = req.body || 'user'
+        const { hostName } = host.name || 'user'
         const roomId = uuidv4()
     
         // here create meeting and store in mongodb {hostName , roomId , createdAt}

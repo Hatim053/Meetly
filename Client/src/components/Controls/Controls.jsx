@@ -1,10 +1,14 @@
-import React from "react"
+import React, { useEffect } from "react"
 import styles from './controls.module.css'
-
+import socket from "../../../socket.js"
+import { useSelector } from "react-redux"
 
 function Controls({ toggleMute , toggleCamera , toggleScreenShare , leaveCall , muted , cameraOff , sharingScreen }) {
-
-
+      const loggedInUser = useSelector(state => state.loggedInUser)
+      const roomId = useSelector(state => state.roomId)
+useEffect(() => {
+        socket.emit("join-room", { roomId, userId: loggedInUser._id, name: loggedInUser.name })
+} , [])
     return (
   <div className={styles["controls"]}>
     <button className={styles["control-btn"]} onClick={toggleMute}>{muted ?  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">

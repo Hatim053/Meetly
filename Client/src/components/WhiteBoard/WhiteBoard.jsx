@@ -31,7 +31,6 @@ function WhiteBoard() {
   canvas.height = window.innerHeight;
   ctxRef.current = canvas.getContext("2d");
 
-  socket.emit("join-room", { roomId, userId: loggedInUser._id, name: loggedInUser.name });
 
   // --- DOM Events ---
   const handleMouseDown = () => {

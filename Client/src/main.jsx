@@ -11,6 +11,7 @@ import Signup from './components/Signup/Signup.jsx'
 import { Provider } from 'react-redux'
 import { store } from '../app/store.js'
 import Banner from './components/Banner/Banner.jsx'
+import HostControls from './components/HostControls/HostControls.jsx'
 
 const router = createBrowserRouter([
   {
@@ -40,9 +41,12 @@ const router = createBrowserRouter([
   },
   {
     path: '/chat-box',
-    element: <ChatBox />
+    element: <ChatBox />,
   },
-
+  {
+    path : '/host-controls',
+    element : <HostControls />,
+  }
 ])
 
 createRoot(document.getElementById('root')).render(
