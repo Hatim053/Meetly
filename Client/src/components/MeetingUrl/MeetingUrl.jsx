@@ -8,7 +8,7 @@ const meetingUrl = useSelector(state => state.roomId)
 
 async function handleCopy() {
     try {
-        await navigator.clipboard.writeText(`http://localhost:5173/call/${meetingUrl}`)
+        await navigator.clipboard.writeText(`/call/${meetingUrl}`)
         setCopied(!copied)
         setTimeout(() => {
             setCopied(!copied)
@@ -28,7 +28,7 @@ async function handleCopy() {
       <div className={styles.linkBox}>
         <input
           type="text"
-          value={`http://localhost:5173/call/${meetingUrl}`}
+          value={`${import.meta.env.VITE_CLIENT_SIDE_URL}/call/${meetingUrl}`}
           readOnly
           className={styles.input}
         />
