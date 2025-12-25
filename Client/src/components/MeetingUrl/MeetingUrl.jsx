@@ -17,7 +17,7 @@ async function handleCopy() {
         console.log('something went wrong' , error)
     }
 }
-console.log(`${import.meta.env.VITE_CLIENT_SIDE_URL}/call/${meetingUrl}`)
+console.log(`https://meetly-tan.vercel.app/call/${meetingUrl}`)
   return (
     <div className={styles.container}>
       <div className={styles.header}>
