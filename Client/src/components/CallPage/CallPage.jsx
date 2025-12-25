@@ -7,7 +7,7 @@ import CallContainer from "../CallContainer/CallContainer.jsx"
 import { useDispatch , useSelector } from "react-redux"
 import { addRoomId } from '../../../user/roomSlice.js'
 import ChatBox from '../ChatBox/ChatBox.jsx'
-import HostControls from '../HostControls/HostControls.jsx'
+
 
 const ICE_SERVERS = {
   iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
@@ -34,7 +34,7 @@ function CallPage() {
   const localStreamRef = useRef(null);
   const remoteStreamRef = useRef(null);
 
-  const videoSenderRef = useRef(null); // 🔥 IMPORTANT
+  const videoSenderRef = useRef(null); 
 
   const pendingCandidatesRef = useRef([]);
   const userIdRef = useRef(uuidv4());
@@ -44,7 +44,7 @@ function CallPage() {
   const [cameraOff, setCameraOff] = useState(false);
   const [sharingScreen, setSharingScreen] = useState(false);
 
-  /* -------------------- START -------------------- */
+ 
 
   useEffect(() => {
     let mounted = true;
@@ -142,12 +142,7 @@ function CallPage() {
         );
       });
 
-      // 🔥 HOST CAMERA CONTROL
-      socket.on("on-control-camera", ({ hostId }) => {
-        if (hostId !== loggedInUser._id) {
-          setTimeout(() => toggleCamera(), 0);
-        }
-      });
+     
 
       socket.on("user-left", cleanup);
     }
@@ -159,7 +154,7 @@ function CallPage() {
     };
   }, []);
 
-  /* -------------------- PEER CONNECTION -------------------- */
+  //Peer Connection
 
   async function ensurePeerConnection() {
     if (pcRef.current) return;
@@ -176,7 +171,7 @@ function CallPage() {
       );
 
       if (track.kind === "video") {
-        videoSenderRef.current = sender; // 🔥 STORE VIDEO SENDER
+        videoSenderRef.current = sender; // STORE VIDEO SENDER
       }
     });
 
@@ -197,8 +192,8 @@ function CallPage() {
     };
   }
 
-  /* -------------------- CONTROLS -------------------- */
 
+//controls
   function toggleMute() {
     localStreamRef.current
       ?.getAudioTracks()
@@ -273,7 +268,7 @@ function CallPage() {
           sharingScreen={sharingScreen}
         />
         <ChatBox />
-        {host && <HostControls  toggleCamera={toggleCamera} />}
+     
       </div>
     </>
   );
