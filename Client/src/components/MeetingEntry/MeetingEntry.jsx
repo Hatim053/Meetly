@@ -29,7 +29,7 @@ function MeetingEntry() {
       function joinMeeting() {
             console.log('joinId'  , joinId.substring(27))
             if (!joinId) return alert('Enter Meeting Id or Url')
-            navigate(`/call/${joinId.substring(27)}`, { state: { name: loggedInUser?.name || 'Guest', isHost: false } })
+            navigate(`/call/${joinId.substring(36)}`, { state: { name: loggedInUser?.name || 'Guest', isHost: false } })
       }
 
       return (
