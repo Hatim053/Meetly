@@ -28,7 +28,7 @@ console.log(`https://meetly-tan.vercel.app/call/${meetingUrl}`)
       <div className={styles.linkBox}>
         <input
           type="text"
-          value={`${import.meta.env.VITE_CLIENT_SIDE_URL}/call/${meetingUrl}`}
+          value={`https://meetly-tan.vercel.app/call/${meetingUrl}`}
           readOnly
           className={styles.input}
         />
