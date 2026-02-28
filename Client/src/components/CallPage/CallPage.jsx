@@ -155,7 +155,6 @@ function CallPage() {
   }, []);
 
   //Peer Connection
-
   async function ensurePeerConnection() {
     if (pcRef.current) return;
 

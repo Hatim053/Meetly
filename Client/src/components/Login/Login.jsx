@@ -1,7 +1,7 @@
 import React from "react"
 import styles from './login.module.css'
 import { useRef } from "react"
-import { useNavigate } from 'react-router-dom'
+import { useNavigate , Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addUser } from '../../../user/userSlice.js'
 
@@ -88,7 +88,7 @@ if(data.status == 405) {
                 <button onClick={loginUser} className={styles["login-btn"]}>Login</button>
 
                 <p className={styles["account-status"]}>
-                    Don't have an account? <a href="/signup">Sign up</a>
+                    Don't have an account? <Link to="/signup">Sign up</Link>
                 </p>
             </form>
         </div>
